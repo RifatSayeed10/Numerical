@@ -2,56 +2,35 @@
 #include <iomanip>
 using namespace std;
 
-// Change this function according to your differential equation
 float f(float x, float y) {
-    return x - y;                 // Example: dy/dx = x - y
-    // return -2*x*y;
-    // return (x - y)/(x + y);
+    return (y - x) / (y + x);
 }
 
 int main() {
-    float x0, y0, h, xn, x, y;
-    int n, i;
+    float x0, y0, h, xn;
 
-    cout << "\n=== Euler's Method for Solving ODE ===\n\n";
+    cout << "Enter x0, y0: ";
+    cin >> x0 >> y0;
 
-    cout << "Enter initial value of x (x0) : ";
-    cin >> x0;
-
-    cout << "Enter initial value of y (y0) : ";
-    cin >> y0;
-
-    cout << "Enter step size (h)          : ";
+    cout << "Enter step size h: ";
     cin >> h;
 
-    cout << "Enter final value of x (xn)  : ";
+    cout << "Enter final x: ";
     cin >> xn;
 
-    n = (xn - x0) / h;   // Number of steps
+    float x = x0, y = y0;
 
-    x = x0;
-    y = y0;
+    cout << fixed << setprecision(6);
+    cout << "x\t\ty\n";
 
-    cout << "\n" << left << setw(10) << "x" << setw(15) << "y(x)" << endl;
-    cout << "-----------------------------------\n";
-
-    cout << fixed << setprecision(4)
-         << left << setw(10) << x
-         << setprecision(6) << setw(15) << y << endl;
-
-    for (i = 1; i <= n; i++) {
-        y = y + h * f(x, y);   // Euler formula
+    while (x < xn) {
+        cout << x << "\t" << y << endl;
+        y = y + h * f(x, y);
         x = x + h;
-
-        cout << fixed << setprecision(4)
-             << left << setw(10) << x
-             << setprecision(6) << setw(15) << y << endl;
     }
 
-    cout << "-----------------------------------\n";
-    cout << fixed << setprecision(4);
-    cout << "Approximate value of y(" << xn << ") = ";
-    cout << fixed << setprecision(8) << y << endl;
+    cout << xn << "\t" << y << endl;
+    cout << "\nAnswer y(" << xn << ") = " << y;
 
     return 0;
 }
