@@ -1,19 +1,17 @@
-//jacobian iteration method for solving linear equations
 #include <iostream>
-#include <iomanip>
 #include <cmath>
+#include <iomanip>
 using namespace std;
 
 int main() {
     int n;
-    double tol;
+    double a[20][21], x[20] = {0}, old[20];
+    double tol, error;
 
     cout << "Enter number of equations: ";
     cin >> n;
 
-    double a[20][21], x[20], x_old[20];
-
-    cout << "Enter augmented matrix coefficients:\n";
+    cout << "Enter augmented matrix:\n";
     for (int i = 0; i < n; i++) {
         for (int j = 0; j <= n; j++) {
             cin >> a[i][j];
@@ -23,34 +21,18 @@ int main() {
     cout << "Enter tolerance: ";
     cin >> tol;
 
-    for (int i = 0; i < n; i++) {
-        x[i] = 0;
-        x_old[i] = 0;
-    }
-
     cout << fixed << setprecision(6);
 
-    cout << "\nIteration";
-    for (int i = 0; i < n; i++) {
-        cout << "\tx" << i + 1;
-    }
-    cout << "\tError\n";
-
-    double error = tol + 1.0;
-    int iter = 0;
-
-    while (error >= tol) {
-        for (int i = 0; i < n; i++) {
-            x_old[i] = x[i];
-        }
+    do {
+        for (int i = 0; i < n; i++)
+            old[i] = x[i];
 
         for (int i = 0; i < n; i++) {
             double sum = a[i][n];
 
             for (int j = 0; j < n; j++) {
-                if (j != i) {
-                    sum -= a[i][j] * x_old[j];
-                }
+                if (i != j)
+                    sum -= a[i][j] * old[j];
             }
 
             x[i] = sum / a[i][i];
@@ -58,20 +40,12 @@ int main() {
 
         error = 0;
         for (int i = 0; i < n; i++) {
-            if (fabs(x[i] - x_old[i]) > error) {
-                error = fabs(x[i] - x_old[i]);
-            }
+            error = max(error, fabs(x[i] - old[i]));
         }
 
-        iter++;
-        cout << iter;
-        for (int i = 0; i < n; i++) {
-            cout << "\t" << x[i];
-        }
-        cout << "\t" << error << endl;
-    }
+    } while (error > tol);
 
-    cout << "\nApproximate solution:\n";
+    cout << "\nSolution:\n";
     for (int i = 0; i < n; i++) {
         cout << "x" << i + 1 << " = " << x[i] << endl;
     }
