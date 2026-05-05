@@ -1,44 +1,38 @@
-#include <bits/stdc++.h>
+#include <iostream>
 using namespace std;
 
 int main() {
     int n;
-    float x[10], y[10];
+    double x[20], y[20];
 
-    cout << "Enter number of n : ";
+    cout << "Enter number of data points: ";
     cin >> n;
 
-    cout << "Enter values x and y : ";
+    cout << "Enter x and y values:\n";
     for (int i = 0; i < n; i++) {
         cin >> x[i] >> y[i];
     }
 
-    float t, h, u, d, p = 1.0;
+    double target;
+    cout << "Enter target year: ";
+    cin >> target;
 
-    cout << "Enter target: ";
-    cin >> t;
+    double h = x[1] - x[0];
+    double u = (target - x[n - 1]) / h;
 
-    h = x[1] - x[0];
-
-    // Backward formula uses last x
-    u = (t - x[n - 1]) / h;
-
-    // Start from last y
-    d = y[n - 1];
+    double ans = y[n - 1];
+    double p = 1;
 
     for (int i = 1; i < n; i++) {
-
-        // Backward differences
         for (int j = n - 1; j >= i; j--) {
             y[j] = y[j] - y[j - 1];
         }
 
         p = p * (u + i - 1) / i;
-
-        d = d + p * y[n - 1];
+        ans = ans + p * y[n - 1];
     }
 
-    cout << "X = " << t << " y = " << d;
+    cout << "Population = " << ans << " thousand";
 
     return 0;
 }
