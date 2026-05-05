@@ -2,35 +2,33 @@
 #include <iomanip>
 using namespace std;
 
-float f(float x, float y) {
+double f(double x, double y) {
     return (y - x) / (y + x);
 }
 
 int main() {
-    float x0, y0, h, xn;
+    double x, y, h, xn;
 
-    cout << "Enter x0, y0: ";
-    cin >> x0 >> y0;
+    cout << "Enter x0: ";
+    cin >> x;
 
-    cout << "Enter step size h: ";
+    cout << "Enter y0: ";
+    cin >> y;
+
+    cout << "Enter h: ";
     cin >> h;
 
-    cout << "Enter final x: ";
+    cout << "Enter xn: ";
     cin >> xn;
 
-    float x = x0, y = y0;
-
     cout << fixed << setprecision(6);
-    cout << "x\t\ty\n";
 
     while (x < xn) {
-        cout << x << "\t" << y << endl;
         y = y + h * f(x, y);
         x = x + h;
     }
 
-    cout << xn << "\t" << y << endl;
-    cout << "\nAnswer y(" << xn << ") = " << y;
+    cout << "y(" << xn << ") = " << y;
 
     return 0;
 }
