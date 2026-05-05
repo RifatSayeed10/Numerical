@@ -1,38 +1,36 @@
-#include<bits/stdc++.h>
+#include <iostream>
+#include <cmath>
 using namespace std;
 
-#define f(x) x*x*x - 2*x - 5
+double f(double x) {
+    return 3*x + sin(x) - exp(x);
+}
 
-int main () {
+int main() {
+    double a, b, c, tol;
 
-    float a ,b,f1,f2,t,m, f3,e;
- cout<< "Enter the value of a and b : "; cin>>a>>b;
+    cout << "Enter a, b: ";
+    cin >> a >> b;
 
- f1=f(a);
- f2=f(b);
+    cout << "Enter tolerance: ";
+    cin >> tol;
 
- if (f1*f2 >0){
-    cout<<"There is no root between a and b";
-    return 0;
- }
- 
- cout<<"Enter the tolarence value : "; cin>>t;
-
- do {
-    
-      m=(a+b)/2;
-      f3=f(m);
-
-    if (f1*f3<0)
-       b=m;
-    else
-       a=m;
-
-      e=abs(b-a);
-       
+    if (f(a) * f(b) > 0) {
+        cout << "Invalid interval!";
+        return 0;
     }
-    while (e>t);
 
-    cout << "The approx root "<<m<<endl;
+    do {
+        c = (a + b) / 2;
 
+        if (f(a) * f(c) < 0)
+            b = c;
+        else
+            a = c;
+
+    } while (fabs(f(c)) > tol);
+
+    cout << "Root = " << c;
+
+    return 0;
 }
