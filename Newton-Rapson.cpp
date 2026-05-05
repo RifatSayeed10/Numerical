@@ -1,25 +1,30 @@
-#include<bits/stdc++.h>
+#include <iostream>
+#include <cmath>
 using namespace std;
 
-#define f(x) x*x*x - 2*x -5
-#define df(x) 3*x*x -2
+double f(double x) {
+    return cos(x) - x * exp(x);
+}
 
-int main () {
- float x0,t  , x  ,f,df,f1   ;
+double df(double x) {
+    return -sin(x) - exp(x) - x * exp(x);
+}
 
-cout<<"Enter the guess value and t : " ; cin>>x0>>t;
+int main() {
+    double x, tol, x1;
 
+    cout << "Enter initial guess: ";
+    cin >> x;
 
+    cout << "Enter tolerance: ";
+    cin >> tol;
 
-do {
-    f=f(x0);
-    df = df(x0);
+    do {
+        x1 = x - f(x) / df(x);
+        x = x1;
+    } while (fabs(f(x)) > tol);
 
-     x=x0-(f/df);
-     x0=x;
-     f1=f(x);
-} while (abs(f1)>t);
+    cout << "Root = " << x;
 
-cout<<"approx root : "<< x;
-
+    return 0;
 }
