@@ -1,0 +1,1152 @@
+NUMERICAL METHODS - ALL C++ CODES
+Repository: RifatSayeed10/Numerical
+Copy only one section/code at a time into your .cpp file and run.
+
+============================================================
+1. Bi_section_done.cpp
+============================================================
+#include <iostream>
+#include <cmath>
+using namespace std;
+
+double f(double x) {
+    return 3*x + sin(x) - exp(x);
+}
+
+int main() {
+    double a, b, c, tol;
+
+    cout << "Enter a, b: ";
+    cin >> a >> b;
+
+    cout << "Enter tolerance: ";
+    cin >> tol;
+
+    if (f(a) * f(b) > 0) {
+        cout << "Invalid interval!";
+        return 0;
+    }
+
+    do {
+        c = (a + b) / 2;
+
+        if (f(a) * f(c) < 0)
+            b = c;
+        else
+            a = c;
+
+    } while (fabs(f(c)) > tol);
+
+    cout << "Root = " << c;
+
+    return 0;
+}
+
+============================================================
+2. rugla_falsi.cpp / Regula Falsi Method
+============================================================
+#include<bits/stdc++.h>
+using namespace std;
+
+#define f(x) ((x)*(x)*(x) - 2*(x) - 5)
+
+int main () {
+
+    float a, b, f1, f2, t, c, f3, e;
+
+    cout << "Enter the value of a and b : ";
+    cin >> a >> b;
+
+    f1 = f(a);
+    f2 = f(b);
+
+    if (f1 * f2 > 0) {
+        cout << "There is no root between a and b";
+        return 0;
+    }
+
+    cout << "Enter the tolerance value : ";
+    cin >> t;
+
+    do {
+        // False Position formula
+        c = (a * f2 - b * f1) / (f2 - f1);
+
+        f3 = f(c);
+
+        if (f1 * f3 < 0) {
+            b = c;
+          
+        }
+        else {
+            a = c;
+            
+        }
+
+        e = fabs(b - a);
+
+    } while (abs(f3) > t);
+
+    cout << "The approx root " << c << endl;
+
+}
+
+============================================================
+3. secant.cpp
+============================================================
+#include<bits/stdc++.h>
+using namespace std;
+
+#define f(x) ((x)*(x)*(x) - 2*(x) - 5)
+
+int main () {
+
+    float x0, x1, x2, f0, f1, f2, t;
+
+    cout << "Enter two initial guesses: ";
+    cin >> x0 >> x1;
+
+    cout << "Enter tolerance value: ";
+    cin >> t;
+
+    do {
+        f0 = f(x0);
+        f1 = f(x1);
+
+        // Secant formula
+        x2 = x1 - (f1 * (x1 - x0)) / (f1 - f0);
+
+        f2 = f(x2);
+
+        // update values
+        x0 = x1;
+        x1 = x2;
+
+    } while (fabs(f2) > t);
+
+    cout << "Approx root: " << x2 << endl;
+
+}
+
+============================================================
+4. Newton-Rapson.cpp
+============================================================
+#include <iostream>
+#include <cmath>
+using namespace std;
+
+double f(double x) {
+    return cos(x) - x * exp(x);
+}
+
+double df(double x) {
+    return -sin(x) - exp(x) - x * exp(x);
+}
+
+int main() {
+    double x, tol, x1;
+
+    cout << "Enter initial guess: ";
+    cin >> x;
+
+    cout << "Enter tolerance: ";
+    cin >> tol;
+
+    do {
+        x1 = x - f(x) / df(x);
+        x = x1;
+    } while (fabs(f(x)) > tol);
+
+    cout << "Root = " << x;
+
+    return 0;
+}
+
+============================================================
+5. trapezoidal.cpp
+============================================================
+#include <iostream>
+#include <cmath>
+using namespace std;
+
+double f(double x) {
+    return sin(x) - log(x) + exp(x);
+}
+
+int main() {
+    double a, b, h, sum;
+    int n;
+
+    cout << "Enter lower limit: ";
+    cin >> a;
+
+    cout << "Enter upper limit: ";
+    cin >> b;
+
+    cout << "Enter number of intervals: ";
+    cin >> n;
+
+    h = (b - a) / n;
+
+    sum = f(a) + f(b);
+
+    for (int i = 1; i < n; i++) {
+        sum += 2 * f(a + i * h);
+    }
+
+    double result = (h / 2) * sum;
+
+    cout << "Integral value = " << result;
+
+    return 0;
+}
+
+============================================================
+6. simpson13rd.cpp
+============================================================
+#include <iostream>
+#include <cmath>
+using namespace std;
+
+double f(double x) {
+    return sqrt(1 - x*x);
+}
+
+int main() {
+    double a, b, h, sum;
+    int n;
+
+    cout << "Enter lower limit: ";
+    cin >> a;
+
+    cout << "Enter upper limit: ";
+    cin >> b;
+
+    cout << "Enter number of intervals even n: ";
+    cin >> n;
+
+    if (n % 2 != 0) {
+        cout << "n must be even!";
+        return 0;
+    }
+
+    h = (b - a) / n;
+    sum = f(a) + f(b);
+
+    for (int i = 1; i < n; i++) {
+        if (i % 2 == 0)
+            sum += 2 * f(a + i * h);
+        else
+            sum += 4 * f(a + i * h);
+    }
+
+    double result = (h / 3) * sum;
+
+    cout << "Integral value = " << result;
+
+    return 0;
+}
+
+============================================================
+7. simpson3th8.cpp
+============================================================
+#include<bits/stdc++.h>
+
+#define f(x) 1/(1+x*x)
+using namespace std;
+int main()
+{
+    float a,b,n,h,ans,i;
+    cout<<"Enter the limit:";cin>>a>>b;
+    cout<<"Enter the value of n:";cin>>n;
+
+    h=(b-a)/n;
+    ans=f(a)+f(b);
+
+    for(i=1;i<n;i++)
+    {
+        float k=a+i*h;
+        if((int)i%3!=0)
+            ans=ans+3*f(k);
+        else
+            ans= ans+2*f(k);
+    }
+    ans=ans*3*h/8;
+    cout<<"The result :"<<ans;
+    return 0;
+}
+============================================================
+8. Eulers.cpp
+============================================================
+#include <iostream>
+#include <iomanip>
+using namespace std;
+
+double f(double x, double y) {
+    return (y - x) / (y + x);
+}
+
+int main() {
+    double x, y, h, xn;
+
+    cout << "Enter x0: ";
+    cin >> x;
+
+    cout << "Enter y0: ";
+    cin >> y;
+
+    cout << "Enter h: ";
+    cin >> h;
+
+    cout << "Enter xn: ";
+    cin >> xn;
+
+    cout << fixed << setprecision(6);
+
+    while (x < xn) {
+        y = y + h * f(x, y);
+        x = x + h;
+    }
+
+    cout << "y(" << xn << ") = " << y;
+
+    return 0;
+}
+============================================================
+9. Runge_kutta_2ndOrder.cpp
+============================================================
+#include <iostream>
+#include <iomanip>
+using namespace std;
+
+// ODE: dy/dx = x - y
+double f(double x, double y) {
+    return x - y;
+}
+
+int main() {
+    double x0, y0, h, xn;
+
+    cout << "Enter x0: ";
+    cin >> x0;
+
+    cout << "Enter y0: ";
+    cin >> y0;
+
+    cout << "Enter step size h: ";
+    cin >> h;
+
+    cout << "Enter final value xn: ";
+    cin >> xn;
+
+    cout << fixed << setprecision(6);
+
+    cout << "\nIteration\t x\t\t y\n";
+
+    int iteration = 0;
+
+    while (x0 < xn) {
+        double k1 = h * f(x0, y0);
+        double k2 = h * f(x0 + h, y0 + k1);
+
+        y0 = y0 + (k1 + k2) / 2.0;
+        x0 = x0 + h;
+        iteration++;
+
+        cout << iteration << "\t\t" << x0 << "\t" << y0 << endl;
+    }
+
+    cout << "\nApproximate value at x = " << xn << " is y = " << y0 << endl;
+
+    return 0;
+}
+
+============================================================
+10. Runge_kutta_4thOrder.cpp
+============================================================
+#include <iostream>
+#include <iomanip>
+using namespace std;
+
+double f(double x, double y) {
+    return (y*y - x*x) / (y*y + x*x);
+}
+
+int main() {
+    double x, y, h, xn;
+
+    cout << "Enter x0: ";
+    cin >> x;
+
+    cout << "Enter y0: ";
+    cin >> y;
+
+    cout << "Enter h: ";
+    cin >> h;
+
+    cout << "Enter xn: ";
+    cin >> xn;
+
+    cout << fixed << setprecision(6);
+
+    while (x < xn) {
+        double k1 = h * f(x, y);
+        double k2 = h * f(x + h/2, y + k1/2);
+        double k3 = h * f(x + h/2, y + k2/2);
+        double k4 = h * f(x + h, y + k3);
+
+        y = y + (k1 + 2*k2 + 2*k3 + k4) / 6;
+        x = x + h;
+    }
+
+    cout << "y(" << xn << ") = " << y;
+
+    return 0;
+}
+
+============================================================
+11. RanjiKutta.cpp
+============================================================
+no need
+============================================================
+12. picards.cpp
+============================================================
+#include <iostream>
+#include <iomanip>
+using namespace std;
+
+// Change this function for your ODE
+float f(float x, float y) {
+    return x - y;   // Example
+}
+
+int main() {
+    float x0, y0, h, xn, x;
+    int n, iterations;
+
+    cout << "\n=== Picard's Iterative Method ===\n\n";
+
+    cout << "Enter x0 : ";
+    cin >> x0;
+
+    cout << "Enter y0 : ";
+    cin >> y0;
+
+    cout << "Enter step size (h): ";
+    cin >> h;
+
+    cout << "Enter final x (xn): ";
+    cin >> xn;
+
+    cout << "Enter number of iterations: ";
+    cin >> iterations;
+
+    n = (xn - x0) / h;
+
+    // Array declaration (fixed max size for safety)
+    float y[20][100];   // [iteration][point]
+
+    // Initial approximation
+    for (int i = 0; i <= n; i++) {
+        y[0][i] = y0;
+    }
+
+    cout << "\n" << setw(10) << "x";
+    for (int i = 1; i <= iterations; i++) {
+        cout << setw(12) << ("y" + to_string(i));
+    }
+    cout << "\n---------------------------------------------\n";
+
+    // Picard Iterations
+    for (int j = 1; j <= iterations; j++) {
+        y[j][0] = y0;
+
+        for (int i = 1; i <= n; i++) {
+            x = x0 + i * h;
+
+            float integral = 0.0;
+
+            integral += f(x0, y[j - 1][0]);
+
+            for (int k = 1; k < i; k++) {
+                integral += 2 * f(x0 + k * h, y[j - 1][k]);
+            }
+
+            integral += f(x, y[j - 1][i]);
+
+            integral = integral * (h / 2.0);
+
+            y[j][i] = y0 + integral;
+        }
+    }
+
+    // Print Results
+    for (int i = 0; i <= n; i++) {
+        x = x0 + i * h;
+        cout << setw(10) << fixed << setprecision(4) << x;
+
+        for (int j = 1; j <= iterations; j++) {
+            cout << setw(12) << fixed << setprecision(6) << y[j][i];
+        }
+        cout << endl;
+    }
+
+    cout << "\nFinal Approximation:\n";
+    cout << "y(" << xn << ") ≈ " << fixed << setprecision(8)
+         << y[iterations][n] << endl;
+
+    return 0;
+}
+
+
+============================================================
+13. Newton_forward.cpp
+============================================================
+#include <iostream>
+using namespace std;
+
+int main() {
+    int n;
+    double x[20], y[20];
+
+    cout << "Enter number of data points: ";
+    cin >> n;
+
+    cout << "Enter x and y values:\n";
+    for (int i = 0; i < n; i++) {
+        cin >> x[i] >> y[i];
+    }
+
+    double target;
+    cout << "Enter target year: ";
+    cin >> target;
+
+    double h = x[1] - x[0];
+    double u = (target - x[0]) / h;
+
+    double ans = y[0];
+    double p = 1;
+
+    for (int i = 1; i < n; i++) {
+        for (int j = 0; j < n - i; j++) {
+            y[j] = y[j + 1] - y[j];
+        }
+
+        p = p * (u - i + 1) / i;
+        ans = ans + p * y[0];
+    }
+
+    cout << "Population = " << ans << " thousand";
+
+    return 0;
+}
+
+============================================================
+14. Newton_backward.cpp
+============================================================
+#include <iostream>
+using namespace std;
+
+int main() {
+    int n;
+    double x[20], y[20];
+
+    cout << "Enter number of data points: ";
+    cin >> n;
+
+    cout << "Enter x and y values:\n";
+    for (int i = 0; i < n; i++) {
+        cin >> x[i] >> y[i];
+    }
+
+    double target;
+    cout << "Enter target year: ";
+    cin >> target;
+
+    double h = x[1] - x[0];
+    double u = (target - x[n - 1]) / h;
+
+    double ans = y[n - 1];
+    double p = 1;
+
+    for (int i = 1; i < n; i++) {
+        for (int j = n - 1; j >= i; j--) {
+            y[j] = y[j] - y[j - 1];
+        }
+
+        p = p * (u + i - 1) / i;
+        ans = ans + p * y[n - 1];
+    }
+
+    cout << "Population = " << ans << " thousand";
+
+    return 0;
+}
+
+============================================================
+15. Newton Central_difference.cpp
+============================================================
+#include<bits/stdc++.h>
+using namespace std;
+
+#define f(x) ((x)*(x)*(x) - 2*(x) - 5)
+
+int main() {
+
+    float x, h, d1, d2;
+
+    cout << "Enter value of x: ";
+    cin >> x;
+
+    cout << "Enter value of h: ";
+    cin >> h;
+
+    // First derivative (central difference)
+    d1 = (f(x+h) - f(x-h)) / (2*h);
+
+    // Second derivative (central difference)
+    d2 = (f(x+h) - 2*f(x) + f(x-h)) / (h*h);
+
+    cout << "First derivative = " << d1 << endl;
+    cout << "Second derivative = " << d2 << endl;
+
+    return 0;
+}
+
+============================================================
+16. Gaus_Elimination.cpp
+============================================================
+#include <iostream>
+#include <iomanip>
+#include <cmath>
+using namespace std;
+
+int main() {
+    int n;
+    double a[20][21], x[20];
+
+    cout << "Enter number of equations: ";
+    cin >> n;
+
+    cout << "\nEnter augmented matrix coefficients:\n";
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j <= n; j++) {
+            cin >> a[i][j];
+        }
+    }
+
+    cout << fixed << setprecision(4);
+
+    cout << "\nInitial Augmented Matrix:\n";
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j <= n; j++)
+            cout << setw(10) << a[i][j];
+        cout << endl;
+    }
+
+    // Forward Elimination
+    for (int k = 0; k < n - 1; k++) {
+
+        if (fabs(a[k][k]) < 0.000001) {
+            cout << "\nMathematical Error: Zero pivot found!\n";
+            return 0;
+        }
+
+        cout << "\nStep " << k + 1
+             << " (Making column " << k + 1 << " zero below pivot)\n";
+
+        for (int i = k + 1; i < n; i++) {
+            double factor = a[i][k] / a[k][k];
+
+            cout << "R" << i + 1 << " = R" << i + 1
+                 << " - (" << factor << ") * R" << k + 1 << endl;
+
+            for (int j = k; j <= n; j++) {
+                a[i][j] = a[i][j] - factor * a[k][j];
+            }
+        }
+
+        cout << "\nMatrix after Step " << k + 1 << ":\n";
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j <= n; j++)
+                cout << setw(10) << a[i][j];
+            cout << endl;
+        }
+    }
+
+    // Back Substitution
+    cout << "\nBack Substitution Steps:\n";
+
+    for (int i = n - 1; i >= 0; i--) {
+        if (fabs(a[i][i]) < 0.000001) {
+            cout << "\nMathematical Error: Division by zero!\n";
+            return 0;
+        }
+
+        x[i] = a[i][n];
+
+        for (int j = i + 1; j < n; j++) {
+            x[i] = x[i] - a[i][j] * x[j];
+        }
+
+        x[i] = x[i] / a[i][i];
+
+        cout << "x" << i + 1 << " = " << x[i] << endl;
+    }
+
+    cout << "\nFinal Solution:\n";
+    for (int i = 0; i < n; i++) {
+        cout << "x" << i + 1 << " = " << x[i] << endl;
+    }
+
+    return 0;
+}
+
+============================================================
+17. Jacobian.cpp
+============================================================
+#include <iostream>
+#include <cmath>
+#include <iomanip>
+using namespace std;
+
+int main() {
+    int n;
+    double a[20][21], x[20] = {0}, old[20];
+    double tol, error;
+
+    cout << "Enter number of equations: ";
+    cin >> n;
+
+    cout << "Enter augmented matrix:\n";
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j <= n; j++) {
+            cin >> a[i][j];
+        }
+    }
+
+    cout << "Enter tolerance: ";
+    cin >> tol;
+
+    cout << fixed << setprecision(6);
+
+    do {
+        for (int i = 0; i < n; i++)
+            old[i] = x[i];
+
+        for (int i = 0; i < n; i++) {
+            double sum = a[i][n];
+
+            for (int j = 0; j < n; j++) {
+                if (i != j)
+                    sum -= a[i][j] * old[j];
+            }
+
+            x[i] = sum / a[i][i];
+        }
+
+        error = 0;
+        for (int i = 0; i < n; i++) {
+            error = max(error, fabs(x[i] - old[i]));
+        }
+
+    } while (error > tol);
+
+    cout << "\nSolution:\n";
+    for (int i = 0; i < n; i++) {
+        cout << "x" << i + 1 << " = " << x[i] << endl;
+    }
+
+    return 0;
+}
+
+
+============================================================
+18. Gaus_sidel.cpp
+============================================================
+#include <iostream>
+#include <cmath>
+#include <iomanip>
+using namespace std;
+
+int main() {
+    int n;
+    double a[20][21], x[20] = {0}, old[20];
+    double tol, error;
+
+    cout << "Enter number of equations: ";
+    cin >> n;
+
+    cout << "Enter augmented matrix:\n";
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j <= n; j++) {
+            cin >> a[i][j];
+        }
+    }
+
+    cout << "Enter tolerance: ";
+    cin >> tol;
+
+    cout << fixed << setprecision(6);
+
+    do {
+        for (int i = 0; i < n; i++)
+            old[i] = x[i];
+
+        for (int i = 0; i < n; i++) {
+            double sum = a[i][n];
+
+            for (int j = 0; j < n; j++) {
+                if (i != j)
+                    sum -= a[i][j] * x[j];
+            }
+
+            x[i] = sum / a[i][i];
+        }
+
+        error = 0;
+        for (int i = 0; i < n; i++) {
+            error = max(error, fabs(x[i] - old[i]));
+        }
+
+    } while (error > tol);
+
+    cout << "\nSolution:\n";
+    for (int i = 0; i < n; i++) {
+        cout << "x" << i + 1 << " = " << x[i] << endl;
+    }
+
+    return 0;
+}
+
+
+============================================================
+19. SOR.cpp
+============================================================
+//Successive Over-Relaxation (SOR) method for solving linear equations
+#include <iostream>
+#include <iomanip>
+#include <cmath>
+using namespace std;
+
+int main() {
+    int n;
+    double tol, omega;
+
+    cout << "Enter number of equations: ";
+    cin >> n;
+
+    double a[20][21], x[20], x_old[20];
+
+    cout << "Enter augmented matrix coefficients:\n";
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j <= n; j++) {
+            cin >> a[i][j];
+        }
+    }
+
+    cout << "Enter relaxation factor (omega): ";
+    cin >> omega;
+
+    cout << "Enter tolerance: ";
+    cin >> tol;
+
+    for (int i = 0; i < n; i++) {
+        x[i] = 0;
+        x_old[i] = 0;
+    }
+
+    cout << fixed << setprecision(6);
+
+    cout << "\nIteration";
+    for (int i = 0; i < n; i++) {
+        cout << "\tx" << i + 1;
+    }
+    cout << "\tError\n";
+
+    double error = tol + 1.0;
+    int iter = 0;
+
+    while (error >= tol) {
+        for (int i = 0; i < n; i++) {
+            x_old[i] = x[i];
+        }
+
+        for (int i = 0; i < n; i++) {
+            double sum = a[i][n];
+
+            for (int j = 0; j < n; j++) {
+                if (j != i) {
+                    sum -= a[i][j] * x[j];
+                }
+            }
+
+            double gs_value = sum / a[i][i];
+            x[i] = (1 - omega) * x_old[i] + omega * gs_value;
+        }
+
+        error = 0;
+        for (int i = 0; i < n; i++) {
+            if (fabs(x[i] - x_old[i]) > error) {
+                error = fabs(x[i] - x_old[i]);
+            }
+        }
+
+        iter++;
+        cout << iter;
+        for (int i = 0; i < n; i++) {
+            cout << "\t" << x[i];
+        }
+        cout << "\t" << error << endl;
+    }
+
+    cout << "\nApproximate solution:\n";
+    for (int i = 0; i < n; i++) {
+        cout << "x" << i + 1 << " = " << x[i] << endl;
+    }
+
+    return 0;
+}
+
+
+============================================================
+20. Finite_difference_PDE.cpp
+============================================================
+#include <iostream>
+#include <iomanip>
+#include <cmath>
+#include <vector>
+using namespace std;
+
+#define PI 3.14159265358979323846
+
+int main() {
+    int nx, nt, choice;
+    double L, Tmax, alpha, dx, dt, r;
+
+    cout << "\n=== Explicit Finite Difference Method for 1D Heat Equation ===\n\n";
+
+    cout << "Enter length of domain (L)          : ";
+    cin >> L;
+
+    cout << "Enter maximum time (Tmax)           : ";
+    cin >> Tmax;
+
+    cout << "Enter number of space divisions (nx): ";
+    cin >> nx;
+
+    cout << "Enter number of time steps (nt)     : ";
+    cin >> nt;
+
+    cout << "Enter thermal diffusivity (alpha)   : ";
+    cin >> alpha;
+
+    dx = L / nx;
+    dt = Tmax / nt;
+    r = alpha * alpha * dt / (dx * dx);
+
+    vector<vector<double>> u(nt + 1, vector<double>(nx + 1, 0.0));
+
+    cout << "\nChoose Initial Condition:\n";
+    cout << "1. u(x,0) = sin(pi*x/L)\n";
+    cout << "2. u(x,0) = x*(L - x)\n";
+    cout << "3. u(x,0) = exp(-x)\n";
+    cout << "Enter choice: ";
+    cin >> choice;
+
+    // Initial condition
+    for (int i = 0; i <= nx; i++) {
+        double x = i * dx;
+
+        if (choice == 1)
+            u[0][i] = sin(PI * x / L);
+        else if (choice == 2)
+            u[0][i] = x * (L - x);
+        else
+            u[0][i] = exp(-x);
+    }
+
+    // Boundary conditions: u(0,t) = u(L,t) = 0
+    for (int j = 0; j <= nt; j++) {
+        u[j][0] = 0.0;
+        u[j][nx] = 0.0;
+    }
+
+    // Explicit finite difference loop
+    for (int j = 0; j < nt; j++) {
+        for (int i = 1; i < nx; i++) {
+            u[j + 1][i] =
+                u[j][i] + r * (u[j][i - 1] - 2 * u[j][i] + u[j][i + 1]);
+        }
+    }
+
+    // Display final result
+    cout << fixed << setprecision(4);
+    cout << "\nSolution at t = " << Tmax << " (Final Time):\n";
+    cout << left << setw(10) << "x" << setw(15) << "u(x,Tmax)" << endl;
+    cout << "----------------------------------------\n";
+
+    int step = nx / 10;
+    if (step == 0) step = 1;
+
+    cout << setprecision(8);
+
+    for (int i = 0; i <= nx; i += step) {
+        double x = i * dx;
+        cout << left << setw(10) << setprecision(4) << x
+             << setw(15) << setprecision(8) << u[nt][i] << endl;
+    }
+
+    cout << "\nStability Parameter (r) = " << setprecision(4) << r;
+
+    if (r > 0.5)
+        cout << " -> WARNING: Unstable! Reduce dt or increase nt.\n";
+    else
+        cout << " -> Stable\n";
+
+    return 0;
+}
+============================================================
+21. LabTest2-PDE.cpp
+============================================================
+#include <iostream>
+#include <cmath>
+#include <vector>
+#include <iomanip>
+using namespace std;
+
+int main() {
+    double L, alpha, T;
+    int nx, nt;
+
+    cout << "Enter length L: ";
+    cin >> L;
+
+    cout << "Enter alpha: ";
+    cin >> alpha;
+
+    cout << "Enter final time T: ";
+    cin >> T;
+
+    cout << "Enter number of space steps nx: ";
+    cin >> nx;
+
+    cout << "Enter number of time steps nt: ";
+    cin >> nt;
+
+    double dx = L / nx;
+    double dt = T / nt;
+
+    double r = (alpha * alpha * dt) / (dx * dx);
+
+    if (r > 0.5) {
+        cout << "Warning: Method may be unstable because r > 0.5\n";
+    }
+
+    vector<double> u(nx + 1), unew(nx + 1);
+
+    // Initial condition: u(x,0) = e^(-x) + sin(x)
+    for (int i = 0; i <= nx; i++) {
+        double x = i * dx;
+        u[i] = exp(-x) + sin(x);
+    }
+
+    // Periodic boundary condition
+    u[nx] = u[0];
+
+    // Time marching
+    for (int n = 0; n < nt; n++) {
+        for (int i = 1; i < nx; i++) {
+            unew[i] = u[i] + r * (u[i + 1] - 2 * u[i] + u[i - 1]);
+        }
+
+        // Periodic boundary condition
+        unew[0] = u[0] + r * (u[1] - 2 * u[0] + u[nx - 1]);
+        unew[nx] = unew[0];
+
+        u = unew;
+    }
+
+    cout << "\nSolution at time T = " << T << ":\n";
+    cout << "x\t\tu(x,T)\n";
+
+    for (int i = 0; i <= nx; i++) {
+        double x = i * dx;
+        cout << fixed << setprecision(6) << x << "\t" << u[i] << endl;
+    }
+
+    return 0;
+}
+
+
+============================================================
+22. straightLine.cpp
+============================================================
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    int n;
+    cout << "Enter number of data points: ";
+    cin >> n;
+
+    double x[100], y[100];
+    double sumX = 0, sumY = 0, sumXY = 0, sumX2 = 0;
+
+    cout << "Enter x and y values:\n";
+    for (int i = 0; i < n; i++) {
+        cin >> x[i] >> y[i];
+
+        sumX += x[i];
+        sumY += y[i];
+        sumXY += x[i] * y[i];
+        sumX2 += x[i] * x[i];
+    }
+
+    double b = (n * sumXY - sumX * sumY) / (n * sumX2 - sumX * sumX);
+    double a = (sumY - b * sumX) / n;
+
+    cout << fixed << setprecision(6);
+    cout << "\nFitted straight line is:\n";
+    cout << "y = " << a << " + " << b << "x\n";
+
+    return 0;
+}
+
+
+============================================================
+23. parabola.cpp
+============================================================
+#include<bits/stdc++.h>
+using namespace std ;
+double determinant (double a1 , double a2 , double a3 , double b1 , double b2 , double b3 , double c1 , double c2 , double c3) {
+  double result = a1 * (b2*c3 - b3 * c2) - b1 * (a2 * c3 - c2 * a3) + c1 * (a2*b3 - b2*a3) ;
+  return result ;
+}
+int main()
+{
+  cout << "Enter the number of points : " ;
+  int n ; cin>>n ;
+  cout << "Enter point (x y ) : " ;
+  double sumX = 0 , sumY = 0 , sumX2 = 0 , sumX3 = 0 , sumX4 = 0 , sumXY = 0 , sumX2Y = 0 ;
+  for (int i = 0 ; i < n ; i++) {
+    double x , y ; cin>>x>>y ;
+    sumX += x ; sumY += y ;
+    sumX2 += x*x ; sumX3 += (x*x*x) ; sumX4 += (x*x*x*x) ;
+    sumXY += (x*y) ; sumX2Y += (x*x*y) ;
+  }
+
+  
+  double Da = determinant (sumY , sumXY , sumX2Y , sumX , sumX2 , sumX3 , sumX2 , sumX3 , sumX4 ) ;
+  double Db = determinant (n , sumX , sumX2 ,sumY , sumXY , sumX2Y , sumX2 , sumX3 , sumX4  ) ;
+  double Dc = determinant (n , sumX , sumX2 , sumX , sumX2 , sumX3 ,sumY , sumXY , sumX2Y ) ;
+  double D = determinant (n , sumX , sumX2 ,sumX , sumX2 , sumX3 ,sumX2 , sumX3 , sumX4) ;
+  
+  double a = Da / D ;
+  double b = Db / D ;
+  double c = Dc / D ;
+
+  cout << fixed << setprecision (4) ; 
+  cout << "The parabola function : y = " << a << " + " << b << "x + " << c << "x2" << endl ;
+  return 0 ;
+}
